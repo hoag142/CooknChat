@@ -1,6 +1,6 @@
 // frontend/src/store/authStore.js
 import { create } from 'zustand';
-import axios from 'axios';
+import axios from '../utils/axiosConfig'; // Import axios instance with interceptors
 
 const useAuthStore = create((set) => ({
     user: null,
