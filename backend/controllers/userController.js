@@ -1,40 +1,17 @@
 // backend/controllers/userController.js
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-
-// Generate JWT
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: '30d',
-    });
-};
+const userService = require('../service/userService');
 
 // @desc    Register user
 // @route   POST /api/users
 // @access  Public
 const registerUser = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
-
-        const userExists = await User.findOne({ $or: [{ email }, { username }] });
-        if (userExists) {
-            return res.status(400).json({ message: 'User already exists' });
-        }
-
-        const user = await User.create({
-            username,
-            email,
-            password,
-        });
-
-        res.status(201).json({
-            _id: user._id,
-            username: user.username,
-            email: user.email,
-            token: generateToken(user._id),
-        });
+        const userData = await userService.registerUser(req.body);
+        res.status(201).json(userData);
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(error.statusCode).json({ message: error.message });
     }
 };
 
