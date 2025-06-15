@@ -1,4 +1,4 @@
-const User = require('../models/userModel');
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
 /**
@@ -16,8 +16,8 @@ const registerUser = async (userData) => {
     const { username, email, password } = userData;
     const userExists = await User.findOne({ $or: [{ email }, { username }] });
     if (userExists) {
-        throw new Error('User already exists');
-        error.status = 400;
+        const error = new Error('User already exists');
+        error.statusCode = 400;
         throw error;
     }
     const user = await User.create({

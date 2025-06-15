@@ -1,11 +1,11 @@
-// backend/routes/userRoutes.js
 const express = require('express');
 const router = express.Router();
-const { registerUser, loginUser, getUserProfile } = require('../controllers/userController');
-const { protect } = require('../middleware/auth');
+const userController = require('../controllers/userController');
+const { protect } = require('../middleware/auth'); // Giả sử middleware auth được đặt ở đây
 
-router.post('/register', registerUser);
-router.post('/login', loginUser);
-router.get('/profile', protect, getUserProfile);
+// Đường dẫn quan trọng
+router.post('/', userController.registerUser); // Đăng ký: POST /api/users
+router.post('/login', userController.loginUser); // Đăng nhập: POST /api/users/login
+router.get('/profile', protect, userController.getUserProfile); // Profile: GET /api/users/profile
 
 module.exports = router;
